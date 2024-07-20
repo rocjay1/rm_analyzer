@@ -10,18 +10,15 @@
 ## Usage
 ```
 # Open terminal
-# Project located at '~\rm_analyzer', e.g.
+# Project located at '~/rm_analyzer', e.g.
 cd ~
 
 # Analyze latest '*-transactions.csv' in the Downloads folder
 python3 rm_analyzer
 
 # Analyze latest CSV saved to a dedicated folder
-python3 rm_analyzer \Users\roccodavino\Documents\Transactions\
+python3 rm_analyzer /Users/roccodavino/Documents/Transactions/
 
 # Analyze a particular CSV
-python3 rm_analyzer \Users\roccodavino\Documents\Transactions\test-transactions.csv
+python3 rm_analyzer /Users/roccodavino/Documents/Transactions/test-transactions.csv
 ```
-
-## Authors
-Rocco Davino
