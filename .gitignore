@@ -2,3 +2,4 @@
 .auth/
 .config/
 __pycache__/
+.venv/
