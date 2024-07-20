@@ -1,7 +1,7 @@
 # rm_analyzer
 
 ## Installation
-- [ ] Install `Python 3.12` and `Git`.
+- [ ] Install `Python 3.12`.
 - [ ] `cd` to the project directory.
 - [ ] Run `pip install -r requirements.txt`.
 - [ ] Run `mkdir .config`. Ask me for the `config.json` to place in the `.config` folder.
