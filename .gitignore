@@ -1,0 +1,4 @@
+.vscode/
+.auth/
+.config/
+__pycache__/
