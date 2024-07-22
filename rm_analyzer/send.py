@@ -1,5 +1,6 @@
-"""Send an email using Gmail and OAuth2."""
+"""Functions for sending an email using Gmail and OAuth2."""
 
+# Standard library imports
 import os
 import base64
 from email.message import EmailMessage
@@ -10,10 +11,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
-
-SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
+import rm_analyzer
 
 
 def gmail_send_message(source, destination, subject, html):
@@ -23,20 +21,17 @@ def gmail_send_message(source, destination, subject, html):
     """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    token_path = os.path.join(SCRIPT_PATH, os.path.join(".auth", "token.json"))
+    #   created automatically when the authorization flow completes for the first
+    #   time.
+    token_path = os.path.join(rm_analyzer.CONFIG_DIR, "token.json")
     if os.path.exists(token_path):
-        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+        creds = Credentials.from_authorized_user_file(token_path, rm_analyzer.SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            creds_path = os.path.join(
-                SCRIPT_PATH, os.path.join(".auth", "credentials.json")
-            )
-            flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
+            flow = InstalledAppFlow.from_client_config(rm_analyzer.CREDS, rm_analyzer.SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         # pylint: disable=unspecified-encoding
@@ -65,8 +60,5 @@ def gmail_send_message(source, destination, subject, html):
     except HttpError as error:
         print(f"An error occurred: {error}")
         send_message = None
+
     return send_message
-
-
-if __name__ == "__main__":
-    pass

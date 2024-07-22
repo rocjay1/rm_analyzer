@@ -1,5 +1,4 @@
-.vscode/
-.auth/
-.config/
-__pycache__/
 .venv/
+.vscode/
+rm_analyzer/__pycache__
+rm_analyzer/credentials.json
