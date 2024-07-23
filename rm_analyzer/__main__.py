@@ -1,4 +1,14 @@
-"""Analyze a transactions CSV."""
+"""Analyze a transactions CSV by generating and sending a summary email.
+
+Usage:
+------
+
+    $ rm_analyzer [-h] [path]
+
+    
+Options:
+    -h, --help  show this help message and exit
+"""
 
 # Standard library imports
 import os

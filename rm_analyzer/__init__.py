@@ -1,4 +1,4 @@
-"""Initialize rm_analyzer, a transactions spreadsheet analyzer."""
+"""Initialize rm_analyzer."""
 
 # Standard library imports
 from importlib import resources
@@ -6,6 +6,7 @@ import os
 import json
 
 # Load the OAuth2 credentials.json file
+# PyInstaller will compile it into the executable
 CREDS = json.loads(
     resources.files("rm_analyzer")
     .joinpath("credentials.json")
