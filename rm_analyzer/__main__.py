@@ -13,7 +13,6 @@ Options:
 # Standard library imports
 import os
 import argparse
-import pandas as pd
 
 import rm_analyzer
 from rm_analyzer import summarize, send
@@ -51,22 +50,7 @@ def main():
 
     # Main logic
     print(f"Running rm-analyzer on: {path}")
-    config = rm_analyzer.CONFIG
-
-    df = pd.read_csv(path)
-    df["Date"] = pd.to_datetime(df["Date"])
-
-    summ_df = summarize.build_summary_df(df, config)
-    tot_series = summ_df.sum(axis=1)
-    tot_series.name = "Total"
-    html = summarize.write_email_body(summ_df, tot_series, config)
-
-    min_date = df["Date"].min().strftime("%m/%d")
-    max_date = df["Date"].max().strftime("%m/%d")
-    subject = f"Transactions Summary: {min_date} - {max_date}"
-    source = config["Email"]
-    dest = [p["Email"] for p in config["People"]]
-
+    source, dest, subject, html = summarize.build_summary(path, rm_analyzer.CONFIG)
     send.gmail_send_message(source, dest, subject, html)
 
 

@@ -4,6 +4,31 @@
 import pandas as pd
 
 
+def _build_owners_json(config):
+    """Builds dataframe containing Account Owner, Account Number data from config."""
+    owners_json = {"Owner": {}, "Account Number": {}}
+    c = 0
+    for p in config["People"]:
+        for n in p["Accounts"]:
+            owners_json["Owner"][c] = p["Name"]
+            owners_json["Account Number"][c] = n
+            c += 1
+    return owners_json
+
+
+def build_summary_df(df, config):
+    """Builds the transactions CSV summary dataframe."""
+    owners_df = pd.DataFrame(_build_owners_json(config))
+    cats = config["Categories"]
+    df_filtered = df[df["Ignored From"].isnull() * df["Category"].isin(cats)]
+    df_merged = pd.merge(df_filtered, owners_df, how="left", on="Account Number")
+    df_agg = df_merged.groupby(["Category", "Owner"])[["Amount"]].sum().reset_index()
+    df_pivot = df_agg.pivot(index="Owner", columns="Category", values="Amount").fillna(
+        0
+    )
+    return df_pivot
+
+
 def _to_money(n):
     """Formats a number as money."""
     return f"{n:.2f}"
@@ -29,8 +54,8 @@ def write_email_body(summ_df, tot_series, config):
     cats = list(summ_df.columns)
     people = list(summ_df.index)
 
-    body_strs = []
-    body_strs.append(
+    body_parts = []
+    body_parts.append(
         """\
 <!DOCTYPE html>
 <html>
@@ -58,12 +83,12 @@ def write_email_body(summ_df, tot_series, config):
     )
 
     for c in cats:
-        body_strs.append(
+        body_parts.append(
             f"""
                 <th>{c}</th>"""
         )
 
-    body_strs.append(
+    body_parts.append(
         """
                 <th>Total</th>
             </tr>
@@ -72,17 +97,17 @@ def write_email_body(summ_df, tot_series, config):
     )
 
     for p in people:
-        body_strs.append(
+        body_parts.append(
             f"""
             <tr>
                 <td>{p}</td>"""
         )
         for c in cats:
-            body_strs.append(
+            body_parts.append(
                 f"""
                 <td>{_to_money(summ_df.at[p, c])}</td>"""
             )
-        body_strs.append(
+        body_parts.append(
             f"""
                 <td>{_to_money(tot_series[p])}</td>
             </tr>"""
@@ -90,59 +115,53 @@ def write_email_body(summ_df, tot_series, config):
 
     if len(people) == 2:
         p1, p2 = people
-        body_strs.append(
+        body_parts.append(
             """
             <tr>
                 <td>Difference</td>"""
         )
         for c in cats:
-            body_strs.append(
+            body_parts.append(
                 f"""
                 <td>{_to_money(summ_df.at[p1, c] - summ_df.at[p2, c])}</td>"""
             )
-        body_strs.append(
+        body_parts.append(
             f"""
                 <td>{_to_money(tot_series[p1] - tot_series[p2])}</td>
             </tr>"""
         )
 
-    body_strs.append(
+    body_parts.append(
         """
         </tbody>
     </table>"""
     )
 
-    body_strs.append(
+    body_parts.append(
         f"""
     <p>{write_summary_sentence(summ_df, tot_series, config)}</p>
 </body>
 </html>"""
     )
 
-    body = "".join(body_strs).replace("&", "&amp;")
+    body = "".join(body_parts).replace("&", "&amp;")
     return body
 
 
-def _build_owners_json(config):
-    """Builds dataframe containing Account Owner, Account Number data from config."""
-    owners_json = {"Owner": {}, "Account Number": {}}
-    c = 0
-    for p in config["People"]:
-        for n in p["Accounts"]:
-            owners_json["Owner"][c] = p["Name"]
-            owners_json["Account Number"][c] = n
-            c += 1
-    return owners_json
+def build_summary(path, config):
+    """Builds the summary email parts."""
+    df = pd.read_csv(path)
+    df["Date"] = pd.to_datetime(df["Date"])
 
+    summ_df = build_summary_df(df, config)
+    tot_series = summ_df.sum(axis=1)
+    tot_series.name = "Total"
+    html = write_email_body(summ_df, tot_series, config)
 
-def build_summary_df(df, config):
-    """Builds the transactions CSV summary dataframe."""
-    owners_df = pd.DataFrame(_build_owners_json(config))
-    cats = config["Categories"]
-    df_filtered = df[df["Ignored From"].isnull() * df["Category"].isin(cats)]
-    df_merged = pd.merge(df_filtered, owners_df, how="left", on="Account Number")
-    df_agg = df_merged.groupby(["Category", "Owner"])[["Amount"]].sum().reset_index()
-    df_pivot = df_agg.pivot(index="Owner", columns="Category", values="Amount").fillna(
-        0
-    )
-    return df_pivot
+    min_date = df["Date"].min().strftime("%m/%d")
+    max_date = df["Date"].max().strftime("%m/%d")
+    subject = f"Transactions Summary: {min_date} - {max_date}"
+    source = config["Email"]
+    dest = [p["Email"] for p in config["People"]]
+
+    return source, dest, subject, html
