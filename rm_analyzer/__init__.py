@@ -27,6 +27,6 @@ _config = os.path.join(_config_dir, "config.json")
 if not os.path.exists(_config):
     print(f"Config file does not exist: {_config}")
     print("Create the config file before continuing.")
-    raise FileNotFoundError(_config)
+    raise FileExistsError(_config)
 with open(_config, encoding="UTF-8") as f:
     CONFIG = json.load(f)

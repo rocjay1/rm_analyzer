@@ -42,9 +42,9 @@ def main():
             raise FileNotFoundError(f"No transactions CSV in directory: {path}")
     elif os.path.isfile(path):
         if not path.endswith("-transactions.csv"):
-            raise FileExistsError(f"File is not a valid transactions CSV: {path}")
+            raise FileNotFoundError(f"File is not a valid transactions CSV: {path}")
     else:
-        raise FileNotFoundError(
+        raise FileExistsError(
             f"Path specified is not a valid directory or file path: {path}"
         )
 
