@@ -1,7 +1,7 @@
 build-job:
   stage: build
   tags:
-    - shared-windows
+    - saas-windows-medium-amd64
   image: python:3.12.4-windowsservercore
   variables:
     SECURE_FILES_DOWNLOAD_PATH: rm_analyzer/
