@@ -1,5 +1,7 @@
 build-job:
   stage: build
+  tags:
+    - shared-windows
   image: python:3.12.4-windowsservercore
   variables:
     SECURE_FILES_DOWNLOAD_PATH: rm_analyzer/
