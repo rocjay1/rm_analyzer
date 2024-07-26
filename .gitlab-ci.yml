@@ -7,9 +7,10 @@ build-windows:
   script: 
     # Download NuGet
     - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .\nuget.exe
-    # Install Python
+    # Install Python and pip
     - nuget.exe install python -Version 3.12.4
-    # Install secure files tools
+    - py -m ensurepip --upgrade
+    # Install Secure Files tools
     - powershell -Command "& { (Invoke-WebRequest -Uri https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer.ps1 -UseBasicParsing).Content | Invoke-Expression }"
     # Install Python dependencies
     - pip install -r requirements.txt
