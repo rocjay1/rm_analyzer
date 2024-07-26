@@ -15,7 +15,7 @@ build-windows:
     - .\python\tools\python.exe -m pip install -r requirements.txt
     - .\python\tools\python.exe -m pip install pyinstaller
     # Compile
-    - pyinstaller cli.py --name rma --add-data rm_analyzer\credentials.json:rm_analyzer --onefile
+    - .\python\tools\scripts\pyinstaller.exe cli.py --name rma --add-data rm_analyzer\credentials.json:rm_analyzer --onefile
   artifacts:
     paths:
       - dist\
