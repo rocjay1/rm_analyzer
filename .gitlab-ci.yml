@@ -9,7 +9,7 @@ build-windows:
     - powershell -Command "& { (Invoke-WebRequest -Uri https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer.ps1 -UseBasicParsing).Content | Invoke-Expression }"
     # Download NuGet to install Python
     - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .\nuget.exe
-    - nuget.exe install python -Version 3.12.4
+    - nuget.exe install python -Version 3.12.4 -ExcludeVersion
     # Install Python dependencies
     - .\python\tools\python.exe -m ensurepip --upgrade
     - .\python\tools\python.exe -m pip install -r requirements.txt
