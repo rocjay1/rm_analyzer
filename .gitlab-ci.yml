@@ -14,7 +14,7 @@ build-windows:
     - python\tools\python.exe -m pip install -r requirements.txt --no-warn-script-location
     - python\tools\python.exe -m pip install pyinstaller --no-warn-script-location
     # Compile
-    - New-Item -Path "$HOME\.rma\config.json" # Prevent PyInstaller from complaining in pipeline logs
+    - New-Item -Path "$HOME\.rma\config.json" -Force # Prevent PyInstaller from complaining in pipeline logs
     # Mac: pyinstaller cli.py --name rma --add-data rm_analyzer/credentials.json:rm_analyzer --onefile
     - python\tools\scripts\pyinstaller.exe cli.py --name rma --add-data rm_analyzer\credentials.json:rm_analyzer --onefile
   artifacts:
