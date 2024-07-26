@@ -6,11 +6,9 @@ build-windows:
     SECURE_FILES_DOWNLOAD_PATH: rm_analyzer\
   script: 
     # Download NuGet
-    - New-Item -Path .\Install -ItemType Directory -Force
-    - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .\Install
+    - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .
     # Install Python
-    - New-Item -Path .\Install\NuGetPacks -ItemType Directory -Force
-    - .\Install\nuget.exe install python -Version 3.12.4 -OutputDirectory .\Install\NuGetPacks
+    - .\Install\nuget.exe install python -Version 3.12.4
     # Install secure files tools
     - powershell -Command "& { (Invoke-WebRequest -Uri https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer.ps1 -UseBasicParsing).Content | Invoke-Expression }"
     # Install Python dependencies
