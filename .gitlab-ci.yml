@@ -12,7 +12,7 @@ build-windows:
     # Install Python
     - New-Item -Path .\Install\NuGetPacks -ItemType Directory -Force
     - .\Install\nuget.exe install python -Version 3.12.4 -OutputDirectory .\Install\NuGetPacks
-    - Sect-Location -Path $cwd
+    - Set-Location -Path $cwd
     # Install secure files tools
     - powershell -Command "& { (Invoke-WebRequest -Uri https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer.ps1 -UseBasicParsing).Content | Invoke-Expression }"
     # Install Python dependencies
