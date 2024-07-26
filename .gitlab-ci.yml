@@ -4,7 +4,7 @@ build-job:
   variables:
     SECURE_FILES_DOWNLOAD_PATH: rm_analyzer/
   script: 
-    - apk add curl bash
+    - apk add curl bash binutils
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - pip install -r requirements.txt
     - pip install pyinstaller
