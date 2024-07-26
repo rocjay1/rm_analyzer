@@ -2,3 +2,6 @@
 .vscode/
 rm_analyzer/__pycache__
 rm_analyzer/credentials.json
+build/
+dist/
+rma.spec
