@@ -5,14 +5,13 @@ build-windows:
   variables:
     SECURE_FILES_DOWNLOAD_PATH: rm_analyzer\
   script: 
-    # Download NuGet
-    - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .\nuget.exe
-    # Install Python and pip
-    - nuget.exe install python -Version 3.12.4
-    - py -m ensurepip --upgrade
-    # Install Secure Files tools
+    # Install GitLab download-secure-files
     - powershell -Command "& { (Invoke-WebRequest -Uri https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer.ps1 -UseBasicParsing).Content | Invoke-Expression }"
+    # Download NuGet to install Python
+    - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .\nuget.exe
+    - nuget.exe install python -Version 3.12.4
     # Install Python dependencies
+    - python -m ensurepip --upgrade
     - pip install -r requirements.txt
     - pip install pyinstaller
     # Compile
