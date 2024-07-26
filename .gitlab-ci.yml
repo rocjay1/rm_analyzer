@@ -1,14 +1,23 @@
-build-job:
+build-windows:
   stage: build
-  image: python:3.12-alpine
+  tags:
+    - saas-windows-medium-amd64
   variables:
-    SECURE_FILES_DOWNLOAD_PATH: rm_analyzer/
+    SECURE_FILES_DOWNLOAD_PATH: rm_analyzer\
   script: 
-    - apk add curl bash binutils
-    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    # Download NuGet
+    - New-Item -Path C:\Install -ItemType Directory -Force
+    - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile C:\Install
+    # Install Python
+    - New-Item -Path C:\Install\NuGetPacks -ItemType Directory -Force
+    - C:\Install\nuget.exe install python -Version 3.12.4 -OutputDirectory C:\Install\NuGetPacks
+    # Install secure files tools
+    - powershell -Command "& { (Invoke-WebRequest -Uri https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer.ps1 -UseBasicParsing).Content | Invoke-Expression }"
+    # Install Python dependencies
     - pip install -r requirements.txt
     - pip install pyinstaller
-    - pyinstaller cli.py --name rma --add-data rm_analyzer/credentials.json:rm_analyzer --onefile
+    # Compile
+    - pyinstaller cli.py --name rma --add-data rm_analyzer\credentials.json:rm_analyzer --onefile
   artifacts:
     paths:
-      - dist/
+      - dist\
