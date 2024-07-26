@@ -6,6 +6,7 @@ build-job:
   script: 
     - pip install -r requirements.txt
     - pip install pyinstaller
+    - RUN apk --no-cache add curl
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - pyinstaller cli.py --name rma --add-data rm_analyzer/credentials.json:rm_analyzer --onefile
   artifacts:
