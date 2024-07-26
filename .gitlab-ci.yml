@@ -11,9 +11,9 @@ build-windows:
     - Invoke-WebRequest -Uri https://aka.ms/nugetclidl -OutFile .\nuget.exe
     - nuget.exe install python -Version 3.12.4
     # Install Python dependencies
-    - python -m ensurepip --upgrade
-    - pip install -r requirements.txt
-    - pip install pyinstaller
+    - .\python\tools\python.exe -m ensurepip --upgrade
+    - .\python\tools\python.exe -m pip install -r requirements.txt
+    - .\python\tools\python.exe -m pip install pyinstaller
     # Compile
     - pyinstaller cli.py --name rma --add-data rm_analyzer\credentials.json:rm_analyzer --onefile
   artifacts:
