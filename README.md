@@ -1,5 +1,15 @@
 # rm_analyzer
 
+## Description
+
+Generates a summary email of a Rocket Money transactions export. Helps two people evenly split monthly expenses. 
+
+**Notes**
+- The main project and CI/CD is hosted at GitLab. The project is push-mirrored to GitHub.
+- Gmail is implemented with OAuth2: [Python quickstart](https://developers.google.com/gmail/api/quickstart/python). `summarize.py` is based on [Sending Email](https://developers.google.com/gmail/api/guides/sending).
+- PyInstaller is used to create the executable. [Using PyInstaller to Easily Distribute Python Applications](https://realpython.com/pyinstaller-python/#using-pyinstaller) is a fantastic resource.
+- To build the Windows executable, a build pipeline triggers PyInstaller to run on a Windows Server VM and captures the executable as an artifact. See [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/) and [Hosted runners on Windows](https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html).
+
 ## Installation
 
 Windows: download executable at [rma.exe](https://gitlab.com/api/v4/projects/60171926/jobs/artifacts/main/raw/dist/rma.exe?job=build-windows).
