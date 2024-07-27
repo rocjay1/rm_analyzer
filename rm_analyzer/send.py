@@ -13,6 +13,9 @@ from googleapiclient.errors import HttpError
 
 import rm_analyzer
 
+# If modifying these scopes, delete the file token.json.
+SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
+
 
 def gmail_send_message(source, destination, subject, html):
     """Create and send an email message
@@ -25,13 +28,15 @@ def gmail_send_message(source, destination, subject, html):
     #   time.
     token_path = os.path.join(rm_analyzer.CONFIG_DIR, "token.json")
     if os.path.exists(token_path):
-        creds = Credentials.from_authorized_user_file(token_path, rm_analyzer.SCOPES)
+        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_config(rm_analyzer.CREDS, rm_analyzer.SCOPES)
+            flow = InstalledAppFlow.from_client_config(
+                rm_analyzer.CREDS, SCOPES
+            )
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         # pylint: disable=unspecified-encoding

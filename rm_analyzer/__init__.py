@@ -13,20 +13,11 @@ CREDS = json.loads(
     .read_text(encoding="UTF-8")
 )
 
-# If modifying these scopes, delete the file token.json
-SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
-
-# Create the config directory if it doesn't exist
-_config_dir = os.path.join(os.path.expanduser("~"), ".rma")
-if not os.path.exists(_config_dir):
-    os.mkdir(_config_dir)
-CONFIG_DIR = _config_dir
-
 # Make sure the config file has been created
-_config = os.path.join(_config_dir, "config.json")
+CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".rma")
+_config = os.path.join(CONFIG_DIR, "config.json")
 if not os.path.exists(_config):
     print(f"Config file does not exist: {_config}")
-    print("Create the config file before continuing.")
     raise FileExistsError(_config)
 with open(_config, encoding="UTF-8") as f:
     CONFIG = json.load(f)
