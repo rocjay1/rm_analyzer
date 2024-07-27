@@ -50,8 +50,8 @@ def main():
 
     # Main logic
     print(f"Running rm-analyzer on: {path}")
-    source, dest, subject, html = summarize.build_summary(path, rm_analyzer.CONFIG)
-    send.gmail_send_message(source, dest, subject, html)
+    dest, subject, html = summarize.build_summary(path, rm_analyzer.CONFIG)
+    send.gmail_send_message(dest, subject, html)
 
 
 if __name__ == "__main__":

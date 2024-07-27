@@ -162,7 +162,6 @@ def build_summary(path, config):
     max_date = df["Date"].max().strftime("%m/%d")
     subject = f"Transactions Summary: {min_date} - {max_date}"
 
-    source = config["Email"]
     dest = [p["Email"] for p in config["People"]]
 
-    return source, dest, subject, html
+    return dest, subject, html

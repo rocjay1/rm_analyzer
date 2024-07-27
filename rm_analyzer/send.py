@@ -17,7 +17,7 @@ import rm_analyzer
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 
-def gmail_send_message(source, destination, subject, html):
+def gmail_send_message(destination, subject, html):
     """Create and send an email message
     Print the returned  message id
     Returns: Message object, including message id
@@ -34,9 +34,7 @@ def gmail_send_message(source, destination, subject, html):
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_config(
-                rm_analyzer.CREDS, SCOPES
-            )
+            flow = InstalledAppFlow.from_client_config(rm_analyzer.CREDS, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         # pylint: disable=unspecified-encoding
@@ -50,7 +48,6 @@ def gmail_send_message(source, destination, subject, html):
         message.set_content(html, subtype="html")
 
         message["To"] = destination
-        message["From"] = source
         message["Subject"] = subject
 
         # encoded message

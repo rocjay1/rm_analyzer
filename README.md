@@ -32,7 +32,6 @@ Create `~/.rma/config.json`. Example:
             "Email": "tuttifruity@hotmail.com"
         }
     ],
-    "Email": "bebas@gmail.com",
     "Factor": 0.5
 }
 ```
