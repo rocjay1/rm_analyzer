@@ -34,7 +34,7 @@ def _to_money(n):
     return f"{n:.2f}"
 
 
-def write_summary_sentence(summ_df, tot_series, config):
+def _write_summary_sentence(summ_df, tot_series, config):
     """Writes the transactions CSV summary sentence."""
     k = config["Factor"]
     people = list(summ_df.index)
@@ -139,7 +139,7 @@ def write_email_body(summ_df, tot_series, config):
 
     body_parts.append(
         f"""
-    <p>{write_summary_sentence(summ_df, tot_series, config)}</p>
+    <p>{_write_summary_sentence(summ_df, tot_series, config)}</p>
 </body>
 </html>"""
     )

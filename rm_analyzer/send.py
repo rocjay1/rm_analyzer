@@ -13,23 +13,20 @@ from googleapiclient.errors import HttpError
 
 import rm_analyzer
 
-# If modifying these scopes, delete the file token.json.
+# If modifying these scopes, delete the file token.json
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 
 def gmail_send_message(destination, subject, html):
-    """Create and send an email message
-    Print the returned  message id
-    Returns: Message object, including message id
-    """
+    """Create and send an email message."""
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     #   created automatically when the authorization flow completes for the first
-    #   time.
+    #   time
     token_path = os.path.join(rm_analyzer.CONFIG_DIR, "token.json")
     if os.path.exists(token_path):
         creds = Credentials.from_authorized_user_file(token_path, SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
+    # If there are no (valid) credentials available, let the user log in
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -46,11 +43,10 @@ def gmail_send_message(destination, subject, html):
         message = EmailMessage()
 
         message.set_content(html, subtype="html")
-
         message["To"] = destination
         message["Subject"] = subject
 
-        # encoded message
+        # Encoded message
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
         create_message = {"raw": encoded_message}

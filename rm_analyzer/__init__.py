@@ -6,7 +6,6 @@ import os
 import json
 
 # Load the OAuth2 credentials.json file
-# PyInstaller will compile it into the executable
 CREDS = json.loads(
     resources.files("rm_analyzer")
     .joinpath("credentials.json")

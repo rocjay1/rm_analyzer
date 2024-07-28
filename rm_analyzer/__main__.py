@@ -1,4 +1,5 @@
-"""Analyze a transactions CSV by generating and sending a summary email.
+"""
+Analyze a transactions CSV by generating and sending a summary email.
 
 Usage:
 ------
@@ -49,7 +50,7 @@ def main():
         )
 
     # Main logic
-    print(f"Running rm-analyzer on: {path}")
+    print(f"Running rm_analyzer on: {path}")
     dest, subject, html = summarize.build_summary(path, rm_analyzer.CONFIG)
     send.gmail_send_message(dest, subject, html)
 
