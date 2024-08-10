@@ -16,7 +16,7 @@ CREDS = json.loads(
 CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".rma")
 _config = os.path.join(CONFIG_DIR, "config.json")
 if not os.path.exists(_config):
-    print(f"Config file does not exist: {_config}")
+    print("Config file does not exist.")
     raise FileExistsError(_config)
 with open(_config, encoding="UTF-8") as f:
     CONFIG = json.load(f)
