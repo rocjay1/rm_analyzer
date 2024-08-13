@@ -29,14 +29,14 @@ def gmail_send_message(destination, subject, html):
         creds = Credentials.from_authorized_user_file(token_path, SCOPES)
     # If there are no (valid) credentials available, let the user log in
     if not creds or not creds.valid:
+        new_app_flow = True
         if creds and creds.expired and creds.refresh_token:
             try:
                 creds.refresh(Request())
+                new_app_flow = False
             except RefreshError:
                 os.remove(token_path)
-                flow = InstalledAppFlow.from_client_config(rm_analyzer.CREDS, SCOPES)
-                creds = flow.run_local_server(port=0)
-        else:
+        if new_app_flow:
             flow = InstalledAppFlow.from_client_config(rm_analyzer.CREDS, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
