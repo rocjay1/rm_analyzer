@@ -4,21 +4,21 @@
 import pandas as pd
 
 
-def _build_owners_json(config):
+def _build_owners_dict(config):
     """Builds dataframe containing Account Owner, Account Number data from config."""
-    owners_json = {"Owner": {}, "Account Number": {}}
+    owners_dict = {"Owner": {}, "Account Number": {}}
     c = 0
     for p in config["People"]:
         for n in p["Accounts"]:
-            owners_json["Owner"][c] = p["Name"]
-            owners_json["Account Number"][c] = n
+            owners_dict["Owner"][c] = p["Name"]
+            owners_dict["Account Number"][c] = n
             c += 1
-    return owners_json
+    return owners_dict
 
 
 def build_summary_df(df, config):
     """Builds the transactions CSV summary dataframe."""
-    owners_df = pd.DataFrame(_build_owners_json(config))
+    owners_df = pd.DataFrame(_build_owners_dict(config))
     cats = config["Categories"]
     df_filtered = df[df["Ignored From"].isnull() * df["Category"].isin(cats)]
     df_merged = pd.merge(df_filtered, owners_df, how="left", on="Account Number")

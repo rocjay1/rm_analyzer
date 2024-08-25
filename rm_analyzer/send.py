@@ -21,12 +21,14 @@ SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 def gmail_send_message(destination, subject, html):
     """Create and send an email message."""
     creds = None
+
     # The file token.json stores the user's access and refresh tokens, and is
     #   created automatically when the authorization flow completes for the first
     #   time
     token_path = os.path.join(rm_analyzer.CONFIG_DIR, "token.json")
     if os.path.exists(token_path):
         creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+
     # If there are no (valid) credentials available, let the user log in
     if not creds or not creds.valid:
         new_app_flow = True
@@ -54,12 +56,12 @@ def gmail_send_message(destination, subject, html):
 
         # Encoded message
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
-
         create_message = {"raw": encoded_message}
         # pylint: disable=E1101
         send_message = (
             service.users().messages().send(userId="me", body=create_message).execute()
         )
+
         print(f'Message Id: {send_message["id"]}')
     except HttpError as error:
         print(f"An error occurred: {error}")
