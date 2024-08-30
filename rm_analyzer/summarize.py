@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def _build_owners_dict(config):
-    """Builds dataframe containing Account Owner, Account Number data from config."""
+    """Builds dictionary containing Account Owner, Account Number data from config file."""
     owners_dict = {"Owner": {}, "Account Number": {}}
     c = 0
     for p in config["People"]:
