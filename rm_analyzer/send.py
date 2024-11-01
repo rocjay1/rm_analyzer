@@ -32,15 +32,19 @@ def gmail_send_message(destination, subject, html):
     # If there are no (valid) credentials available, let the user log in
     if not creds or not creds.valid:
         new_app_flow = True
+
         if creds and creds.expired and creds.refresh_token:
             try:
                 creds.refresh(Request())
                 new_app_flow = False
             except RefreshError:
+                # Google Cloud "Testing" apps's refresh tokens expire in 7 days
                 os.remove(token_path)
+
         if new_app_flow:
             flow = InstalledAppFlow.from_client_config(rm_analyzer.CREDS, SCOPES)
             creds = flow.run_local_server(port=0)
+
         # Save the credentials for the next run
         # pylint: disable=unspecified-encoding
         with open(token_path, "w") as token:
@@ -49,7 +53,6 @@ def gmail_send_message(destination, subject, html):
     try:
         service = build("gmail", "v1", credentials=creds)
         message = EmailMessage()
-
         message.set_content(html, subtype="html")
         message["To"] = destination
         message["Subject"] = subject

@@ -36,13 +36,12 @@ def _to_money(n):
 
 def _write_summary_sentence(summ_df, tot_series, config):
     """Writes the transactions CSV summary sentence."""
-    k = config["Factor"]
     people = list(summ_df.index)
     if len(people) == 2:
         p1, p2 = people
         s = (
-            f"Using a scale factor of {k} for {p1}, {p1} owes {p2}: "
-            f"{_to_money(k * tot_series.sum() - tot_series[p1])}."
+            f"{p1} owes {p2}: "
+            f"{_to_money(0.5 * tot_series.sum() - tot_series[p1])}."
         )
     else:
         s = "See the table above for transaction totals by person, category."
