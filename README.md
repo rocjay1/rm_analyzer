@@ -12,7 +12,7 @@ Generates a summary email of a Rocket Money transactions export. Helps two peopl
 
 ## Installation
 
-Windows: download executable at [rma.exe](https://gitlab.com/api/v4/projects/60171926/jobs/artifacts/main/raw/dist/rma.exe?job=build-windows).
+Windows: download executable at [rma.exe](https://gitlab.com/jasonroc19/rm_analyzer/-/jobs/8251519334/artifacts/raw/dist/rma.exe).
 
 ## Configuration
 
